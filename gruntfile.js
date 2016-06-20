@@ -1,7 +1,7 @@
 var webpack = require('webpack');
 
 module.exports = function(grunt) {
-	require('load-grunt-tasks')(grunt); 
+	require('load-grunt-tasks')(grunt);
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-webpack');
 
@@ -9,13 +9,10 @@ module.exports = function(grunt) {
     'webpack': {
       build: {
         progress: true,
-        entry: {
-          planout: './index.js',
-          planout_core_compatible: './index_core_compatible.js'
-        },
+        entry: './index.js',
         output: {
           libraryTarget: 'umd',
-          filename: 'dist/[name].js',
+          filename: 'dist/planout.js',
           library: 'PlanOut'
         },
         module: {
@@ -27,6 +24,18 @@ module.exports = function(grunt) {
         }
       }
     },
+    'babel': {
+        options: {
+        },
+        dist: {
+            files:[{
+                expand: true,
+                cwd: 'es6/',
+                src: ['**/*.js'],
+                dest: 'lib/'
+            }]
+        }
+    },
     'uglify': {
       options: {
         sourceMap: true,
@@ -34,12 +43,11 @@ module.exports = function(grunt) {
       },
       build: {
         files: {
-          'dist/planout.min.js': 'dist/planout.js',
-          'dist/planout_core_compatible.min.js': 'dist/planout_core_compatible.js'
+          'dist/planout.min.js': 'dist/planout.js'
         }
       }
     }
    });
-	 
+
 	grunt.registerTask('default', ['webpack', 'uglify']);
 }
